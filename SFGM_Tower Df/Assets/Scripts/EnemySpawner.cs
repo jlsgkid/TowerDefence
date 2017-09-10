@@ -8,9 +8,13 @@ public class EnemySpawner : MonoBehaviour {
 	public Transform startPos;
 	public float timeBetweenSpawn = 0.2f;
 	public static int countOfEnemyIsAlive = 0;
+	private Coroutine coroutine = null;
 
 	void Start(){
-		StartCoroutine (SpawnEnemy ());
+		coroutine = StartCoroutine (SpawnEnemy ());
+	}
+	public void StopSpawn(){
+		StopCoroutine (coroutine);
 	}
 
 	IEnumerator SpawnEnemy(){
@@ -28,9 +32,13 @@ public class EnemySpawner : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (timeBetweenSpawn);
 		}
+		while(countOfEnemyIsAlive > 0){
+			yield return 0;
+		}
+		GameMgr.instance.Win ();
 	}
 
 	void Update(){
-		Debug.Log (countOfEnemyIsAlive);
+		//Debug.Log (countOfEnemyIsAlive);
 	}
 }
